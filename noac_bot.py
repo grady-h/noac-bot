@@ -6,22 +6,22 @@ from touch_grass_cog import TouchGrass
 load_dotenv()
 # TODO: review intents
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='/', intents=intents)
+GrassBot = commands.Bot(command_prefix='/', intents=intents)
 
 SERVER_ID = 1096518509145628793
 GENERAL_CHANNEL_ID = 1096518509699289242
 
 # event listeners
-@bot.event
+@GrassBot.event
 async def on_ready():
-    print(f"{bot.user} has connected to the server!")
-    server = bot.get_guild(SERVER_ID)
-    general_channel = bot.get_channel(GENERAL_CHANNEL_ID)
+    print(f"{GrassBot.user} has connected to the server!")
+    server = GrassBot.get_guild(SERVER_ID)
+    general_channel = GrassBot.get_channel(GENERAL_CHANNEL_ID)
     member_msg_count = {}
 
     # get all channels
     channels = []
-    for channel in bot.get_all_channels():
+    for channel in GrassBot.get_all_channels():
         # exclude non text channels
         if type(channel) != discord.channel.TextChannel:
             continue
@@ -55,9 +55,8 @@ async def on_ready():
         member_msg_count[member] = 0
 
     # add touch grass cog
-    await bot.add_cog(TouchGrass(bot, general_channel, touch_grass_role, touch_grass_member, member_msg_count))
+    await GrassBot.add_cog(TouchGrass(GrassBot, general_channel, touch_grass_role, touch_grass_member, member_msg_count))
 
     print("Finish initializing")
 
-
-bot.run(os.getenv('TOKEN'))
+GrassBot.run(os.getenv('TOKEN'))
